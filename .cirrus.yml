@@ -35,7 +35,7 @@ task:
       - echo "============================"
       - mkdir twrp
       - cd twrp
-      - repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-9.0
+      - repo init -u --depth=1 --no-repo-verify -u git://github.com/CherishOS/android_manifest.git -b tiramisu -g default,-mips,-darwin,-notdefault
       - repo sync
       - echo "============================"
       - echo "Syncing Complete!"
@@ -45,10 +45,12 @@ task:
       - echo "============================"
       - echo "Starting the Build..."
       - echo "============================"
-      - cd twrp
-      - git clone https://github.com/mrx7014/TWRP_Samsung_a3y17lte--gtaxllte-
+      - cd build
+      - git clone https://github.com/MLZ94/android_device_asus_X00QD device/asus/X00QD
+     -git clone https://github.com/crdroidandroid/android_kernel_asus_X00QD/ kernel/asus/X00QD
+      -git clone https://github.com/MLZ94/vendor_asus_X00QD vendor/asus/X00QD
       - . build/envsetup.sh
-      - lunch omni_gtaxllte-eng && mka recoveryimage
+      - lunch lineage_x00qd-userdebug
   Upload_script:
       - echo "============================"
       - echo "Uploading the Build..."
