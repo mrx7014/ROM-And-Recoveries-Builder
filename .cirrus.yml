@@ -2,7 +2,7 @@ task:
   name: "Setting Up, Syncing, Building and Uploading..."
   timeout_in: 240m  
   container:
-      image: ubuntu:20.04
+      image: ubuntu-latest
       cpu: 8
       memory: 32G
         
@@ -33,10 +33,11 @@ task:
       - echo "============================"
       - echo "Syncing The Sources...."
       - echo "============================"
-      - mkdir twrp
-      - cd twrp
-      - repo init -u https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git -b twrp-9.0
-      - repo sync
+      - mkdir ~/OrangeFox_sync
+      - cd ~/OrangeFox_sync
+      - git clone https://gitlab.com/OrangeFox/sync.git
+      - cd ~/OrangeFox_sync/sync/
+      - ./orangefox_sync.sh --branch 12.1 --path ~/fox_12.1
       - echo "============================"
       - echo "Syncing Complete!"
       - echo "============================"
@@ -45,10 +46,13 @@ task:
       - echo "============================"
       - echo "Starting the Build..."
       - echo "============================"
-      - cd twrp
-      - git clone https://github.com/mrx7014/TWRP_Samsung_a3y17lte--gtaxllte-
-      - . build/envsetup.sh
-      - lunch omni_gtaxllte-eng && mka recoveryimage
+      - cd ~/fox_12.1
+      - git clone https://github.com/mrx7014/android_device_samsung_a23 device/samsung/a23
+      - source build/envsetup.sh
+      - export ALLOW_MISSING_DEPENDENCIES=true
+      - export FOX_BUILD_DEVICE=<device>
+      - export LC_ALL="C"
+      - lunch omni_a23-eng && mka recoveryimage
   Upload_script:
       - echo "============================"
       - echo "Uploading the Build..."
